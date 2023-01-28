@@ -2,13 +2,32 @@ package org.example.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ORDERS") //order라는 테이블을 가지고있는 database가 있음
 public class Order {
 
-    @Id
+    @Id @GeneratedValue
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+
+
+    //강의에서 1.8 이후로는 데이터베이스에 적용 가능하다고 봤음 강의 확인 후 수
+    private LocalDateTime orderDate;
+
+    // ORDINAL 설정시에 데이터베이스에 0,1 등으로 저장되는데 enum순서 변경 혹은 추가시 위험할 수 있음
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
 
     public Long getId() {
         return id;
@@ -18,12 +37,30 @@ public class Order {
         this.id = id;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        //연관관계 제거
+        if(this.member != null){
+            member.getOrders().remove(this);
+        }
+        member.getOrders().add(this);
+        this.member = member;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public LocalDateTime getOrderDate() {
@@ -41,14 +78,4 @@ public class Order {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
-
-    @Column(name = "member_id")
-    private Long memberId;
-
-    //강의에서 1.8 이후로는 데이터베이스에 적용 가능하다고 봤음 강의 확인 후 수정
-    private LocalDateTime orderDate;
-
-    // ORDINAL 설정시에 데이터베이스에 0,1 등으로 저장되는데 enum순서 변경 혹은 추가시 위험할 수 있음
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
 }
