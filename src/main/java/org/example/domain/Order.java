@@ -19,6 +19,10 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
+
 
 
     //강의에서 1.8 이후로는 데이터베이스에 적용 가능하다고 봤음 강의 확인 후 수
@@ -28,6 +32,15 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 
     public Long getId() {
         return id;
