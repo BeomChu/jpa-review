@@ -1,9 +1,11 @@
 package org.example.domain;
 
+import org.example.domain.item.Item;
+
 import javax.persistence.*;
 
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

@@ -1,11 +1,13 @@
 package org.example.domain;
 
+import org.example.domain.item.Item;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Category {
+public class Category extends BaseEntity{
 
     @Id @GeneratedValue
     @Column(name = "category_id")

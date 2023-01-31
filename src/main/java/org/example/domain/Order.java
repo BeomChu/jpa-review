@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "ORDERS") //order라는 테이블을 가지고있는 database가 있음
-public class Order {
+public class Order extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

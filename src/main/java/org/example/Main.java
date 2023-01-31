@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.domain.Item;
-import org.example.domain.Member;
-import org.example.domain.Order;
-import org.example.domain.OrderItem;
+import org.example.domain.item.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,11 +16,16 @@ public class Main {
 
         EntityTransaction tx = em.getTransaction();
 
+        tx.begin();
 
         try {
-            tx.begin();
 
-            System.out.println("test");
+            Book book = new Book();
+            book.setName("JPA");
+            book.setName("김영한");
+
+            em.persist(book);
+
 
             tx.commit();
         } catch (Exception e) {

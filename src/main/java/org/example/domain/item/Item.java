@@ -1,11 +1,16 @@
-package org.example.domain;
+package org.example.domain.item;
+
+import org.example.domain.BaseEntity;
+import org.example.domain.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn // default == DTYPE
+public class Item extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "item_id")
@@ -17,6 +22,7 @@ public class Item {
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
 
 
     public Long getId() {
@@ -49,5 +55,13 @@ public class Item {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
